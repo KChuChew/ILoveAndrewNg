@@ -65,6 +65,9 @@ Theta2_grad = zeros(size(Theta2));
 % sample x input for dimensions
 singular_sample = X(1, :);
 
+Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size);
+Theta2 = randInitializeWeights(hidden_layer_size, num_labels);
+
 % NO FOR LOOPS MOTHERFUCKER
 % START UNREGULARIZED COST FUNCTION CALCULATION
 num_labels_identity = eye(num_labels);
