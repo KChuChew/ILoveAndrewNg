@@ -114,9 +114,7 @@ J = J + ((sums * lambda) / (2 * m));
 
 % Randomly initialize Theta1 and Theta2
 %disp(size(Theta1, 1));
-Theta1_rand = randInitializeWeights(input_layer_size, hidden_layer_size + 1);
-%disp(size(Theta1_rand));
-Theta2_rand = randInitializeWeights(hidden_layer_size, num_labels);
+
 % NOTES FOR VECTORIZED IMPLEMENTATION OF NN TRAINING
 %disp(size(Theta2_rand));
 hidden_layer_rand_activations = sigmoid(X * Theta1_rand');
