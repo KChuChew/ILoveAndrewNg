@@ -63,10 +63,7 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 % sample x input for dimensions
-singular_sample = X(1, :);
-
-Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size);
-Theta2 = randInitializeWeights(hidden_layer_size, num_labels);
+%singular_sample = X(1, :);
 
 % NO FOR LOOPS MOTHERFUCKER
 % START UNREGULARIZED COST FUNCTION CALCULATION
@@ -117,16 +114,32 @@ J = J + ((sums * lambda) / (2 * m));
 
 % Randomly initialize Theta1 and Theta2
 %disp(size(Theta1, 1));
-Theta1_rand = randInitializeWeights(size(Theta1, 1), size(Theta1, 2));
-disp(size(Theta1_rand));
-Theta2_rand = randInitializeWeights(size(Theta2, 1), size(Theta2, 2));
-disp(size(Theta2_rand));
+Theta1_rand = randInitializeWeights(input_layer_size, hidden_layer_size + 1);
+%disp(size(Theta1_rand));
+Theta2_rand = randInitializeWeights(hidden_layer_size, num_labels);
+% NOTES FOR VECTORIZED IMPLEMENTATION OF NN TRAINING
+%disp(size(Theta2_rand));
+hidden_layer_rand_activations = sigmoid(X * Theta1_rand');
+% Add ones to the hidden layer activations
+hidden_layer_rand_activations = [ones(m, 1) hidden_layer_activations];
+output_layer_rand_activations = sigmoid(hidden_layer_activations * Theta2_rand');
+output_layer_deltas = output_layer_rand_activations - training_labels_matrix;
+hidden_layer_deltas = output_layer_deltas * Theta2_rand .* sigmoidGradient(X * Theta1_rand');
+hidden_layer_deltas = hidden_layer_deltas(:, 2:end);
+
+%disp(size(hidden_layer_deltas));
+
+Theta1_grad = Theta1_grad + hidden_layer_deltas' * X;
+%disp(size(Theta1_grad));
+Theta2_grad = Theta2_grad + output_layer_deltas' * hidden_layer_activations;
+%disp(size(hidden_layer_deltas));
 
 %delta_output_layer = output_layer_activations - training_labels_matrix;
-
 %delta_hidden_layer = delta_output_layer * Theta2_rand .* sigmoidGradient(X * Theta1_rand');
-
 %disp(size(delta_output_layer));
+
+Theta1_grad = Theta1_grad / m;
+Theta2_grad = Theta2_grad / m;
 
 % -------------------------------------------------------------
 
