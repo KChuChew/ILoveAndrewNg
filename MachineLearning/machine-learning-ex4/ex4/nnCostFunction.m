@@ -62,8 +62,6 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
-% sample x input for dimensions
-%singular_sample = X(1, :);
 
 % NO FOR LOOPS MOTHERFUCKER
 % START UNREGULARIZED COST FUNCTION CALCULATION
@@ -112,29 +110,22 @@ sums = sum_Theta1 + sum_Theta2;
 J = J + ((sums * lambda) / (2 * m));
 % END REGULARIZED COST FUNCTION
 
-% Randomly initialize Theta1 and Theta2
-%disp(size(Theta1, 1));
 
 % NOTES FOR VECTORIZED IMPLEMENTATION OF NN TRAINING
-%disp(size(Theta2_rand));
-hidden_layer_rand_activations = sigmoid(X * Theta1_rand');
-% Add ones to the hidden layer activations
-hidden_layer_rand_activations = [ones(m, 1) hidden_layer_activations];
-output_layer_rand_activations = sigmoid(hidden_layer_activations * Theta2_rand');
-output_layer_deltas = output_layer_rand_activations - training_labels_matrix;
-hidden_layer_deltas = output_layer_deltas * Theta2_rand .* sigmoidGradient(X * Theta1_rand');
-hidden_layer_deltas = hidden_layer_deltas(:, 2:end);
 
-%disp(size(hidden_layer_deltas));
+% d(3) = a(3) - y
+output_layer_deltas = output_layer_activations - training_labels_matrix;
 
-Theta1_grad = Theta1_grad + hidden_layer_deltas' * X;
-%disp(size(Theta1_grad));
-Theta2_grad = Theta2_grad + output_layer_deltas' * hidden_layer_activations;
-%disp(size(hidden_layer_deltas));
+% Steps for d(2) = Theta(2)' * d(3) .* g(prime)(z(2))
+% z(2)
+hidden_layer_inputs = X * Theta1';
+% g(prime)(z(2))
+sigmoid_gradients = sigmoid(hidden_layer_inputs) .* (1 - sigmoid(hidden_layer_inputs));
+% d(2) = Theta(2)' * d(3) * sigmoid_gradients
+hidden_layer_deltas = output_layer_deltas * Theta2(:, 2: end) .* sigmoid_gradients;
 
-%delta_output_layer = output_layer_activations - training_labels_matrix;
-%delta_hidden_layer = delta_output_layer * Theta2_rand .* sigmoidGradient(X * Theta1_rand');
-%disp(size(delta_output_layer));
+Theta1_grad = hidden_layer_deltas' * X;
+Theta2_grad = output_layer_deltas' * hidden_layer_activations;
 
 Theta1_grad = Theta1_grad / m;
 Theta2_grad = Theta2_grad / m;
