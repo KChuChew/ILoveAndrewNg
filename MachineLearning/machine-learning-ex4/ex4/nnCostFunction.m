@@ -122,13 +122,20 @@ hidden_layer_inputs = X * Theta1';
 % g(prime)(z(2))
 sigmoid_gradients = sigmoid(hidden_layer_inputs) .* (1 - sigmoid(hidden_layer_inputs));
 % d(2) = Theta(2)' * d(3) * sigmoid_gradients
-hidden_layer_deltas = output_layer_deltas * Theta2(:, 2: end) .* sigmoid_gradients;
+% Theta2(:, 2:end) ignore first column because backprop doesn't propagate to bias unit
+hidden_layer_deltas = output_layer_deltas * Theta2(:, 2:end) .* sigmoid_gradients;
 
 Theta1_grad = hidden_layer_deltas' * X;
 Theta2_grad = output_layer_deltas' * hidden_layer_activations;
 
 Theta1_grad = Theta1_grad / m;
 Theta2_grad = Theta2_grad / m;
+
+% regularize the gradient
+% d/dTheta J(Theta) = D(ij)^(l) = (Delta(ij)^(l)) / m for j = 0
+% d/dTheta J(Theta) = D(ij)^(l) = (Delta(ij)^(l)) + Theta(ij)^(l) * (lambda / m) for j > 0
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + Theta1(:, 2:end) * lambda / m;
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + Theta2(:, 2:end) * lambda / m;
 
 % -------------------------------------------------------------
 
