@@ -19,16 +19,21 @@ grad = zeros(size(theta));
 %               You should set J to the cost and grad to the gradient.
 %
 
+% calculate linear regression cost
+unregularized_cost = (sum((X * theta - y).^2)) / (2 * m);
+regularization_term = sum(theta(2:end).^2) * lambda / (2 * m);
 
+J = unregularized_cost + regularization_term;
 
+% calculate linear regression gradient
+error_vector = X * theta - y;
 
+% sum(h(X(i) - y(i)) * x(i)j)
+unregularized_gradient = X' * error_vector / m;
+grad = unregularized_gradient;
 
-
-
-
-
-
-
+% + theta(j) * lambda / m
+grad(2:end) = grad(2:end) + (theta(2:end) * lambda / m);
 
 % =========================================================================
 
