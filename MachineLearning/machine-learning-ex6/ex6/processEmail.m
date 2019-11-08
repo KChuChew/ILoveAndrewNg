@@ -98,14 +98,13 @@ while ~isempty(email_contents)
     %
 
 
-
-
-
-
-
-
-
-
+	for dictionary_index = 1:size(vocabList)
+		if (strcmp(str, vocabList(dictionary_index)) == 1)
+			word_indices = [word_indices; dictionary_index];
+			break;
+		endif
+	end
+	
     % =============================================================
 
 
