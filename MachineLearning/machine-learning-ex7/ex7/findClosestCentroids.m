@@ -21,11 +21,19 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
+%distance_mat = zeros(size(X, 1), size(centroids, 1));
 
+for i = 1:K
 
+	vector_diffs = bsxfun(@minus, X, centroids(i, :));
 
+	vector_diff_dists = sum(vector_diffs.^2, 2);
 
+	distance_mat(:, i) = vector_diff_dists;
 
+end
+
+[minval, idx] = min(distance_mat, [], 2);
 
 % =============================================================
 
