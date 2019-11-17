@@ -26,12 +26,20 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
+points_assigned = zeros(K, 1);
+points_summed = zeros(K, size(X, 2));
 
+for i = 1:size(idx)
 
+	points_summed(idx(i), :) = points_summed(idx(i), :) + X(i, :);
+	points_assigned(idx(i)) = points_assigned(idx(i)) + 1;
 
+end
 
+centroids = points_summed ./ points_assigned;
 
-
+%disp(points_summed);
+%disp(points_assigned);
 
 % =============================================================
 
