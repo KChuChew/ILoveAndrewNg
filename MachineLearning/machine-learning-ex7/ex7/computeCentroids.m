@@ -38,8 +38,6 @@ end
 
 centroids = points_summed ./ points_assigned;
 
-%disp(points_summed);
-%disp(points_assigned);
 
 % =============================================================
 
