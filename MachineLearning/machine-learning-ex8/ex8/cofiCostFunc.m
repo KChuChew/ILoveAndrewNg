@@ -40,13 +40,11 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
-
-
-
-
-
-
-
+% Calculate Cost (J)
+hypothesis = X * Theta';
+mean_sq_diff = (hypothesis - Y).^2;
+valid_ratings = mean_sq_diff .* R;
+J = sum((sum(valid_ratings))) / 2;
 
 
 
