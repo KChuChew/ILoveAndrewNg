@@ -45,13 +45,17 @@ hypothesis = X * Theta';
 mean_sq_diff = (hypothesis - Y).^2;
 valid_ratings = mean_sq_diff .* R;
 J = sum((sum(valid_ratings))) / 2;
+% Add regularization term to Cost (J)
+% Add regularization term to Cost (J)
+J = J + (sum(sum(Theta.^2)) + sum(sum(X.^2))) * lambda / 2;
 
 
-
-
-
-
-
+% Calculate Gradient
+X_grad = (X * Theta' - Y) .* R * Theta;
+Theta_grad = ((X * Theta' - Y) .* R)' * X;
+% Regularize the gradients
+X_grad = X_grad + (X * lambda);
+Theta_grad = Theta_grad + (Theta * lambda);
 
 % =============================================================
 
