@@ -46,7 +46,6 @@ mean_sq_diff = (hypothesis - Y).^2;
 valid_ratings = mean_sq_diff .* R;
 J = sum((sum(valid_ratings))) / 2;
 % Add regularization term to Cost (J)
-% Add regularization term to Cost (J)
 J = J + (sum(sum(Theta.^2)) + sum(sum(X.^2))) * lambda / 2;
 
 
